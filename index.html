@@ -1,693 +1,514 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
   <meta charset="UTF-8">
-
-  <meta name="viewport"
-        content="width=device-width, initial-scale=1.0">
-
-  <title>
-    Luxury Hotel Feedback System
-  </title>
-
-  <link rel="preconnect"
-        href="https://fonts.googleapis.com">
-
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
-        rel="stylesheet">
-
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#102a43">
+  <title>Luxury Hotel | Guest Feedback</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
   <style>
-
-    *{
-      margin:0;
-      padding:0;
-      box-sizing:border-box;
-      font-family:'Poppins',sans-serif;
+    :root {
+      --navy: #102a43;
+      --navy-light: #243f55;
+      --gold: #c69b52;
+      --gold-light: #f4e8d1;
+      --paper: #fffdf9;
+      --ink: #243342;
+      --muted: #687887;
+      --line: #e4e8ec;
+      --success-bg: #e8f7ed;
+      --success-ink: #17633a;
+      --danger: #b42318;
+      --shadow: 0 24px 70px rgba(16, 42, 67, .15);
     }
 
-    body{
-      min-height:100vh;
-
-      background:linear-gradient(
-        135deg,
-        #dbeafe,
-        #bfdbfe,
-        #93c5fd
-      );
-
-      display:flex;
-      justify-content:center;
-      align-items:center;
-
-      padding:30px;
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      padding: 32px 16px;
+      color: var(--ink);
+      font-family: "DM Sans", sans-serif;
+      background:
+        radial-gradient(circle at 10% 10%, rgba(198,155,82,.18), transparent 28rem),
+        linear-gradient(135deg, #edf2f5, #f8f4ed);
     }
 
-    .container{
-      width:100%;
-      max-width:850px;
-
-      background:white;
-
-      border-radius:24px;
-
-      overflow:hidden;
-
-      box-shadow:0 15px 35px rgba(0,0,0,0.15);
-
-      animation:fadeIn 1s ease;
+    .container {
+      width: min(100%, 900px);
+      margin: 0 auto;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,.8);
+      border-radius: 24px;
+      background: var(--paper);
+      box-shadow: var(--shadow);
+      animation: appear .65s ease both;
     }
 
-    .banner{
-      background:url('https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=1200&auto=format&fit=crop') center/cover;
-
-      height:260px;
-
-      position:relative;
+    .hero {
+      position: relative;
+      min-height: 285px;
+      display: grid;
+      place-items: center;
+      padding: 38px 22px;
+      text-align: center;
+      color: #fff;
+      background:
+        linear-gradient(120deg, rgba(10,28,43,.82), rgba(10,28,43,.36)),
+        url("https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1600&q=85") center 55%/cover;
     }
 
-    .overlay{
-      position:absolute;
-      inset:0;
-
-      background:rgba(0,0,0,0.45);
-
-      display:flex;
-      flex-direction:column;
-      justify-content:center;
-      align-items:center;
-
-      text-align:center;
-
-      color:white;
-
-      padding:20px;
+    .hero-content { max-width: 650px; }
+    .eyebrow {
+      margin: 0 0 12px;
+      color: #f1d7a5;
+      font-size: .76rem;
+      font-weight: 700;
+      letter-spacing: .22em;
+      text-transform: uppercase;
     }
+    h1, h2 { font-family: "Playfair Display", Georgia, serif; }
+    h1 { margin: 0; font-size: clamp(2.1rem, 5vw, 3.4rem); line-height: 1.12; }
+    .hero p:last-child { margin: 15px 0 0; color: #f4f5f6; line-height: 1.65; }
 
-    .overlay h1{
-      font-size:42px;
-      margin-bottom:10px;
-      font-weight:700;
+    form { padding: clamp(18px, 4vw, 38px); }
+    fieldset {
+      min-width: 0;
+      margin: 0 0 24px;
+      padding: clamp(18px, 3vw, 26px);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: #fff;
     }
-
-    .overlay p{
-      font-size:16px;
-      opacity:0.95;
+    legend {
+      padding: 0 10px 0 0;
+      color: var(--navy);
+      font-family: "Playfair Display", Georgia, serif;
+      font-size: 1.35rem;
+      font-weight: 700;
     }
-
-    form{
-      padding:35px;
+    .section-note { margin: -3px 0 20px; color: var(--muted); font-size: .9rem; }
+    .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+    .input-group { min-width: 0; margin-bottom: 17px; }
+    .input-group:last-child { margin-bottom: 0; }
+    label, .field-label { display: block; margin-bottom: 8px; color: #344657; font-size: .92rem; font-weight: 700; }
+    .required { color: var(--danger); }
+    input:not([type="radio"]):not([type="checkbox"]),
+    select, textarea {
+      display: block;
+      width: 100%;
+      min-height: 48px;
+      padding: 12px 14px;
+      border: 1px solid #ccd5dd;
+      border-radius: 10px;
+      background: #fff;
+      color: var(--ink);
+      font: inherit;
+      transition: border-color .2s, box-shadow .2s;
     }
-
-    fieldset{
-      border:none;
-
-      margin-bottom:25px;
-
-      padding:24px;
-
-      border-radius:18px;
-
-      background:linear-gradient(
-        135deg,
-        #eef5ff,
-        #dbeafe
-      );
-
-      box-shadow:0 6px 16px rgba(37,99,235,0.12);
+    textarea { min-height: 125px; resize: vertical; }
+    input:focus-visible, select:focus-visible, textarea:focus-visible, button:focus-visible, .star:focus-visible {
+      outline: 3px solid rgba(198,155,82,.4);
+      outline-offset: 2px;
+      border-color: var(--gold);
     }
-
-    legend{
-      font-size:22px;
-
-      font-weight:600;
-
-      color:#1e3c72;
-
-      margin-bottom:18px;
+    .choice-group { display: flex; flex-wrap: wrap; gap: 10px; }
+    .choice {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 42px;
+      margin: 0;
+      padding: 9px 13px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #fbfcfd;
+      cursor: pointer;
+      font-weight: 500;
+      transition: background .2s, border-color .2s, transform .2s;
     }
+    .choice:hover { border-color: var(--gold); background: #fffaf1; transform: translateY(-1px); }
+    .choice input { accent-color: var(--navy); }
 
-    .input-group{
-      margin-bottom:18px;
+    .rating-row { display: grid; grid-template-columns: 1fr; gap: 9px; }
+    .stars { display: flex; align-items: center; gap: 5px; }
+    .star {
+      padding: 2px;
+      border: 0;
+      background: transparent;
+      color: #c9d0d6;
+      font-size: 2.2rem;
+      line-height: 1;
+      cursor: pointer;
+      transition: color .15s, transform .15s;
     }
+    .star:hover { transform: scale(1.12); }
+    .star.active { color: var(--gold); }
+    .rating-text { min-height: 22px; color: var(--muted); font-size: .9rem; }
+    .counter { display: flex; justify-content: space-between; gap: 10px; margin-top: 7px; color: var(--muted); font-size: .82rem; }
+    .counter.near-limit { color: var(--danger); }
 
-    label{
-      display:block;
-
-      margin-bottom:8px;
-
-      font-weight:500;
-
-      color:#333;
+    .actions { display: flex; gap: 12px; margin-top: 8px; }
+    button { font: inherit; }
+    .btn {
+      min-height: 50px;
+      padding: 13px 20px;
+      border: 0;
+      border-radius: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform .2s, box-shadow .2s, background .2s;
     }
+    .btn:hover { transform: translateY(-2px); }
+    .btn-primary { flex: 1; color: #fff; background: linear-gradient(135deg, var(--navy), var(--navy-light)); box-shadow: 0 8px 18px rgba(16,42,67,.18); }
+    .btn-primary:hover { box-shadow: 0 12px 24px rgba(16,42,67,.25); }
+    .btn-secondary { color: var(--navy); border: 1px solid #d8dee4; background: #fff; }
+    .notice { display: none; margin: 18px 0 0; padding: 14px 16px; border-radius: 10px; line-height: 1.5; }
+    .notice.success { display: block; color: var(--success-ink); background: var(--success-bg); }
+    .notice.error { display: block; color: var(--danger); background: #fff0ef; }
+    .feedback-section { padding: 0 clamp(18px, 4vw, 38px) 32px; }
+    .feedback-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 14px; }
+    .feedback-heading h2 { margin: 0; color: var(--navy); font-size: 1.5rem; }
+    .count-badge { padding: 5px 10px; border-radius: 999px; background: var(--gold-light); color: #77551d; font-size: .82rem; font-weight: 700; }
+    .empty-state { padding: 22px; border: 1px dashed #cbd5df; border-radius: 12px; color: var(--muted); text-align: center; }
+    .feedback-card { margin-top: 12px; padding: 18px; border: 1px solid var(--line); border-radius: 13px; background: #fff; }
+    .feedback-card-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
+    .feedback-card h3 { margin: 0 0 4px; color: var(--navy); font-size: 1rem; }
+    .feedback-meta { color: var(--muted); font-size: .82rem; }
+    .feedback-card p { margin: 12px 0 0; line-height: 1.55; overflow-wrap: anywhere; }
+    .feedback-stars { color: var(--gold); letter-spacing: 2px; }
+    .delete-btn { padding: 7px 10px; border: 1px solid #f1c6c3; border-radius: 8px; color: var(--danger); background: #fff; cursor: pointer; }
+    .delete-btn:hover { background: #fff0ef; }
+    footer { padding: 20px; color: #dce4eb; background: var(--navy); text-align: center; font-size: .85rem; }
+    .privacy-note { margin: 14px 0 0; color: var(--muted); font-size: .8rem; line-height: 1.5; text-align: center; }
 
-    input,
-    select,
-    textarea{
-      width:100%;
-
-      padding:14px;
-
-      border:1px solid #cbd5e1;
-
-      border-radius:12px;
-
-      font-size:15px;
-
-      background:white;
-
-      transition:0.3s;
+    @keyframes appear { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+    @media (max-width: 620px) {
+      body { padding: 12px 8px; }
+      .container { border-radius: 17px; }
+      .hero { min-height: 230px; }
+      .grid { grid-template-columns: 1fr; gap: 0; }
+      .choice-group { flex-direction: column; }
+      .choice { width: 100%; }
+      .actions { flex-direction: column; }
+      .btn-secondary { order: 2; }
+      .feedback-card-top { flex-direction: column; }
     }
-
-    input:focus,
-    select:focus,
-    textarea:focus{
-      outline:none;
-
-      border-color:#2563eb;
-
-      box-shadow:0 0 10px rgba(37,99,235,0.2);
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; transition-duration: .01ms !important; }
     }
-
-    textarea{
-      resize:none;
-    }
-
-    .radio-group,
-    .checkbox-group{
-      display:flex;
-      flex-wrap:wrap;
-
-      gap:15px;
-
-      margin-top:10px;
-    }
-
-    .radio-group label,
-    .checkbox-group label{
-      display:flex;
-      align-items:center;
-
-      gap:8px;
-
-      background:white;
-
-      padding:10px 15px;
-
-      border-radius:10px;
-
-      cursor:pointer;
-
-      transition:0.3s;
-
-      box-shadow:0 2px 8px rgba(0,0,0,0.05);
-    }
-
-    .radio-group label:hover,
-    .checkbox-group label:hover{
-      transform:translateY(-2px);
-
-      background:#f8fbff;
-    }
-
-    .stars{
-      display:flex;
-
-      gap:10px;
-
-      font-size:30px;
-
-      margin-top:10px;
-
-      cursor:pointer;
-    }
-
-    .star{
-      color:#cbd5e1;
-
-      transition:0.3s;
-    }
-
-    .star.active{
-      color:gold;
-
-      transform:scale(1.15);
-    }
-
-    .counter{
-      text-align:right;
-
-      margin-top:5px;
-
-      color:#666;
-
-      font-size:14px;
-    }
-
-    button{
-      width:100%;
-
-      padding:16px;
-
-      border:none;
-
-      border-radius:14px;
-
-      background:linear-gradient(
-        135deg,
-        #2563eb,
-        #1d4ed8
-      );
-
-      color:white;
-
-      font-size:18px;
-
-      font-weight:600;
-
-      cursor:pointer;
-
-      transition:0.3s;
-    }
-
-    button:hover{
-      transform:translateY(-3px);
-
-      box-shadow:0 10px 20px rgba(37,99,235,0.25);
-    }
-
-    .success-message{
-      display:none;
-
-      margin-top:20px;
-
-      padding:15px;
-
-      border-radius:12px;
-
-      background:#dcfce7;
-
-      color:#166534;
-
-      text-align:center;
-
-      font-weight:600;
-
-      animation:fadeIn 0.5s ease;
-    }
-
-    footer{
-      text-align:center;
-
-      padding:20px;
-
-      background:#f8fbff;
-
-      color:#64748b;
-
-      font-size:14px;
-    }
-
-    @keyframes fadeIn{
-
-      from{
-        opacity:0;
-        transform:translateY(20px);
-      }
-
-      to{
-        opacity:1;
-        transform:translateY(0);
-      }
-    }
-
-    @media(max-width:768px){
-
-      .container{
-        border-radius:18px;
-      }
-
-      .banner{
-        height:200px;
-      }
-
-      .overlay h1{
-        font-size:26px;
-      }
-
-      .overlay p{
-        font-size:14px;
-      }
-
-      form{
-        padding:25px;
-      }
-
-      fieldset{
-        padding:18px;
-      }
-
-      input,
-      select,
-      textarea{
-        padding:12px;
-        font-size:14px;
-      }
-
-      button{
-        padding:14px;
-        font-size:16px;
-      }
-
-      .radio-group,
-      .checkbox-group{
-        flex-direction:column;
-      }
-    }
-
   </style>
-
 </head>
-
 <body>
-
-  <div class="container">
-
-    <div class="banner">
-
-      <div class="overlay">
-
-        <h1>
-          Luxury Hotel Feedback
-        </h1>
-
-        <p>
-          Your valuable feedback helps us improve your experience
-        </p>
-
+  <main class="container">
+    <header class="hero">
+      <div class="hero-content">
+        <p class="eyebrow">Your comfort is our priority</p>
+        <h1>Luxury Hotel<br>Guest Feedback</h1>
+        <p>Share your experience and help us make every stay exceptional.</p>
       </div>
-
-    </div>
+    </header>
 
     <form id="feedbackForm">
+      <fieldset>
+        <legend>Personal Information</legend>
+        <p class="section-note">Tell us how we can identify your visit.</p>
+        <div class="grid">
+          <div class="input-group">
+            <label for="name">Full name <span class="required">*</span></label>
+            <input type="text" id="name" name="name" placeholder="Enter your full name" autocomplete="name" minlength="2" maxlength="80" required>
+          </div>
+          <div class="input-group">
+            <label for="email">Email address <span class="required">*</span></label>
+            <input type="email" id="email" name="email" placeholder="you@example.com" autocomplete="email" maxlength="120" required>
+          </div>
+          <div class="input-group">
+            <label for="age">Age (optional)</label>
+            <input type="number" id="age" name="age" placeholder="Enter your age" min="18" max="120">
+          </div>
+          <div class="input-group">
+            <label for="visitDate">Date of visit (optional)</label>
+            <input type="date" id="visitDate" name="visitDate">
+          </div>
+        </div>
+      </fieldset>
 
       <fieldset>
-
-        <legend>
-          Personal Information
-        </legend>
-
+        <legend>Visit Information</legend>
         <div class="input-group">
-
-          <label for="name">
-            Full Name
-          </label>
-
-          <input type="text"
-                 id="name"
-                 placeholder="Enter your full name"
-                 required>
-
+          <span class="field-label" id="visitQuestion">Is this your first visit? <span class="required">*</span></span>
+          <div class="choice-group" role="radiogroup" aria-labelledby="visitQuestion">
+            <label class="choice"><input type="radio" name="visit" value="Yes" required> Yes, first visit</label>
+            <label class="choice"><input type="radio" name="visit" value="No"> No, I've visited before</label>
+          </div>
         </div>
+      </fieldset>
 
+      <fieldset>
+        <legend>Why Did You Choose Us?</legend>
+        <p class="section-note">Select all the reasons that apply.</p>
+        <div class="choice-group">
+          <label class="choice"><input type="checkbox" name="reasons" value="Social Media"> Social media</label>
+          <label class="choice"><input type="checkbox" name="reasons" value="Recommendation"> Recommendation</label>
+          <label class="choice"><input type="checkbox" name="reasons" value="Location"> Location</label>
+          <label class="choice"><input type="checkbox" name="reasons" value="Reputation"> Reputation</label>
+          <label class="choice"><input type="checkbox" name="reasons" value="Affordable Pricing"> Affordable pricing</label>
+          <label class="choice"><input type="checkbox" name="reasons" value="Online Reviews"> Online reviews</label>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Rate Our Services</legend>
+        <div class="grid">
+          <div class="input-group rating-row">
+            <span class="field-label" id="serviceRatingLabel">Overall hotel service <span class="required">*</span></span>
+            <div class="stars" id="serviceStars" role="group" aria-labelledby="serviceRatingLabel" aria-describedby="ratingText">
+              <button class="star" type="button" data-rating="1" aria-label="Rate 1 out of 5 stars" aria-pressed="false">★</button>
+              <button class="star" type="button" data-rating="2" aria-label="Rate 2 out of 5 stars" aria-pressed="false">★</button>
+              <button class="star" type="button" data-rating="3" aria-label="Rate 3 out of 5 stars" aria-pressed="false">★</button>
+              <button class="star" type="button" data-rating="4" aria-label="Rate 4 out of 5 stars" aria-pressed="false">★</button>
+              <button class="star" type="button" data-rating="5" aria-label="Rate 5 out of 5 stars" aria-pressed="false">★</button>
+            </div>
+            <div class="rating-text" id="ratingText" aria-live="polite">Choose a rating from 1 to 5.</div>
+            <input type="hidden" id="serviceRating" name="serviceRating" value="">
+          </div>
+          <div class="input-group">
+            <label for="foodRating">Food quality <span class="required">*</span></label>
+            <select id="foodRating" name="foodRating" required>
+              <option value="">Select a rating</option>
+              <option value="Excellent">Excellent</option>
+              <option value="Very Good">Very good</option>
+              <option value="Good">Good</option>
+              <option value="Average">Average</option>
+              <option value="Poor">Poor</option>
+            </select>
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Additional Feedback</legend>
         <div class="input-group">
-
-          <label for="email">
-            Email Address
-          </label>
-
-          <input type="email"
-                 id="email"
-                 placeholder="Enter your email"
-                 required>
-
+          <label for="comments">Comments or suggestions (optional)</label>
+          <textarea id="comments" name="comments" maxlength="500" placeholder="What did you enjoy? What could we improve?"></textarea>
+          <div class="counter" id="counter"><span>Keep your feedback clear and helpful.</span><span><span id="charCount">0</span>/500</span></div>
         </div>
-
-        <div class="input-group">
-
-          <label for="age">
-            Age
-          </label>
-
-          <input type="number"
-                 id="age"
-                 placeholder="Enter your age"
-                 min="10"
-                 max="100">
-
-        </div>
-
       </fieldset>
 
-      <fieldset>
-
-        <legend>
-          Visit Information
-        </legend>
-
-        <label>
-          Is this your first visit?
-        </label>
-
-        <div class="radio-group">
-
-          <label>
-            <input type="radio"
-                   name="visit"
-                   required>
-            Yes
-          </label>
-
-          <label>
-            <input type="radio"
-                   name="visit">
-            No
-          </label>
-
-        </div>
-
-      </fieldset>
-
-      <fieldset>
-
-        <legend>
-          Why Did You Choose Us?
-        </legend>
-
-        <div class="checkbox-group">
-
-          <label>
-            <input type="checkbox">
-            Social Media
-          </label>
-
-          <label>
-            <input type="checkbox">
-            Recommendation
-          </label>
-
-          <label>
-            <input type="checkbox">
-            Location
-          </label>
-
-          <label>
-            <input type="checkbox">
-            Reputation
-          </label>
-
-          <label>
-            <input type="checkbox">
-            Affordable Pricing
-          </label>
-
-        </div>
-
-      </fieldset>
-
-      <fieldset>
-
-        <legend>
-          Rate Our Services
-        </legend>
-
-        <label>
-          Hotel Service
-        </label>
-
-        <div class="stars"
-             id="serviceStars">
-
-          <span class="star">★</span>
-          <span class="star">★</span>
-          <span class="star">★</span>
-          <span class="star">★</span>
-          <span class="star">★</span>
-
-        </div>
-
-        <br>
-
-        <label for="foodRating">
-          Food Quality
-        </label>
-
-        <select id="foodRating"
-                required>
-
-          <option value="">
-            Select Rating
-          </option>
-
-          <option>
-            Excellent
-          </option>
-
-          <option>
-            Very Good
-          </option>
-
-          <option>
-            Good
-          </option>
-
-          <option>
-            Average
-          </option>
-
-          <option>
-            Poor
-          </option>
-
-        </select>
-
-      </fieldset>
-
-      <fieldset>
-
-        <legend>
-          Additional Feedback
-        </legend>
-
-        <textarea id="comments"
-                  rows="5"
-                  maxlength="200"
-                  placeholder="Share your experience with us..."></textarea>
-
-        <div class="counter">
-
-          <span id="charCount">
-            0
-          </span>/200
-
-        </div>
-
-      </fieldset>
-
-      <button type="submit">
-        Submit Feedback
-      </button>
-
-      <div class="success-message"
-           id="successMessage">
-
-        ✅ Thank you! Your feedback has been submitted successfully.
-
+      <div class="actions">
+        <button class="btn btn-primary" type="submit">Submit Feedback</button>
+        <button class="btn btn-secondary" type="reset">Clear Form</button>
       </div>
-
+      <div class="notice" id="formNotice" role="status" aria-live="polite"></div>
+      <p class="privacy-note">Demo project: submissions are stored in this browser only and are not sent to the hotel.</p>
     </form>
 
-    <footer>
-      © 2026 Luxury Hotel | Customer Satisfaction is Our Priority
-    </footer>
+    <section class="feedback-section" aria-labelledby="savedHeading">
+      <div class="feedback-heading">
+        <h2 id="savedHeading">Saved Feedback</h2>
+        <span class="count-badge" id="feedbackCount">0 entries</span>
+      </div>
+      <div id="feedbackList" aria-live="polite"></div>
+    </section>
 
-  </div>
+    <footer>© 2026 Luxury Hotel · Every stay, a special experience.</footer>
+  </main>
 
   <script>
+    (() => {
+      "use strict";
 
-    const stars = document.querySelectorAll(".star");
+      const STORAGE_KEY = "luxuryHotelFeedbackEntries";
+      const form = document.getElementById("feedbackForm");
+      const comments = document.getElementById("comments");
+      const charCount = document.getElementById("charCount");
+      const counter = document.getElementById("counter");
+      const serviceRating = document.getElementById("serviceRating");
+      const ratingText = document.getElementById("ratingText");
+      const stars = [...document.querySelectorAll(".star")];
+      const notice = document.getElementById("formNotice");
+      const feedbackList = document.getElementById("feedbackList");
+      const feedbackCount = document.getElementById("feedbackCount");
 
-    stars.forEach((star,index)=>{
+      const ratingLabels = ["", "Poor", "Fair", "Good", "Very good", "Excellent"];
+      let selectedRating = 0;
+      let noticeTimer;
 
-      star.addEventListener("click",()=>{
+      function getFeedbackEntries() {
+        try {
+          const parsed = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+          return Array.isArray(parsed) ? parsed : [];
+        } catch (error) {
+          return [];
+        }
+      }
 
-        stars.forEach((s,i)=>{
+      function saveFeedbackEntries(entries) {
+        try {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
+          return true;
+        } catch (error) {
+          showNotice("Your browser could not save the feedback. Check your storage settings and try again.", "error");
+          return false;
+        }
+      }
 
-          if(i <= index){
+      function showNotice(message, type) {
+        window.clearTimeout(noticeTimer);
+        notice.textContent = message;
+        notice.className = `notice ${type}`;
+        noticeTimer = window.setTimeout(() => {
+          notice.className = "notice";
+          notice.textContent = "";
+        }, 5000);
+      }
 
-            s.classList.add("active");
-
-          }
-
-          else{
-
-            s.classList.remove("active");
-
-          }
-
+      function setRating(value) {
+        selectedRating = value;
+        serviceRating.value = value ? String(value) : "";
+        stars.forEach((star, index) => {
+          const active = index < value;
+          star.classList.toggle("active", active);
+          star.setAttribute("aria-pressed", String(index + 1 === value));
         });
+        ratingText.textContent = value ? `${value}/5 — ${ratingLabels[value]}` : "Choose a rating from 1 to 5.";
+      }
 
+      stars.forEach((star) => {
+        star.addEventListener("click", () => setRating(Number(star.dataset.rating)));
+        star.addEventListener("keydown", (event) => {
+          if (event.key === "ArrowRight" || event.key === "ArrowUp") {
+            event.preventDefault();
+            const next = Math.min(5, selectedRating + 1 || 1);
+            setRating(next);
+            stars[next - 1].focus();
+          } else if (event.key === "ArrowLeft" || event.key === "ArrowDown") {
+            event.preventDefault();
+            const next = Math.max(1, selectedRating - 1 || 1);
+            setRating(next);
+            stars[next - 1].focus();
+          }
+        });
       });
 
-    });
+      function updateCounter() {
+        charCount.textContent = String(comments.value.length);
+        counter.classList.toggle("near-limit", comments.value.length >= 450);
+      }
+      comments.addEventListener("input", updateCounter);
 
-    const comments = document.getElementById("comments");
+      function addTextElement(parent, tag, className, text) {
+        const element = document.createElement(tag);
+        if (className) element.className = className;
+        element.textContent = text;
+        parent.appendChild(element);
+        return element;
+      }
 
-    const charCount = document.getElementById("charCount");
+      function renderFeedback() {
+        const entries = getFeedbackEntries().sort((a, b) => b.createdAt - a.createdAt);
+        feedbackCount.textContent = `${entries.length} ${entries.length === 1 ? "entry" : "entries"}`;
+        feedbackList.replaceChildren();
 
-    comments.addEventListener("input",()=>{
+        if (!entries.length) {
+          addTextElement(feedbackList, "div", "empty-state", "No feedback has been saved yet. Your submitted feedback will appear here.");
+          return;
+        }
 
-      charCount.textContent = comments.value.length;
+        entries.forEach((entry) => {
+          const card = document.createElement("article");
+          card.className = "feedback-card";
 
-    });
+          const top = document.createElement("div");
+          top.className = "feedback-card-top";
+          const identity = document.createElement("div");
+          addTextElement(identity, "h3", "", entry.name || "Guest");
+          const dateText = entry.createdAt ? new Date(entry.createdAt).toLocaleString() : "Date unavailable";
+          addTextElement(identity, "div", "feedback-meta", `${dateText} · ${entry.foodRating || "No food rating"}`);
+          top.appendChild(identity);
 
-    const form = document.getElementById("feedbackForm");
+          const controls = document.createElement("div");
+          controls.style.display = "flex";
+          controls.style.alignItems = "center";
+          controls.style.gap = "12px";
+          const rating = addTextElement(controls, "span", "feedback-stars", `${"★".repeat(entry.serviceRating || 0)}${"☆".repeat(5 - (entry.serviceRating || 0))}`);
+          rating.setAttribute("aria-label", `Service rating: ${entry.serviceRating || 0} out of 5`);
+          const deleteButton = addTextElement(controls, "button", "delete-btn", "Delete");
+          deleteButton.type = "button";
+          deleteButton.setAttribute("aria-label", `Delete feedback from ${entry.name || "Guest"}`);
+          deleteButton.addEventListener("click", () => {
+            const remaining = getFeedbackEntries().filter((item) => item.id !== entry.id);
+            if (saveFeedbackEntries(remaining)) {
+              renderFeedback();
+              showNotice("Feedback entry deleted.", "success");
+            }
+          });
+          top.appendChild(controls);
+          card.appendChild(top);
 
-    const successMessage = document.getElementById("successMessage");
+          const details = [];
+          if (entry.visit) details.push(`First visit: ${entry.visit}`);
+          if (Array.isArray(entry.reasons) && entry.reasons.length) details.push(`Chose us for: ${entry.reasons.join(", ")}`);
+          if (entry.age) details.push(`Age: ${entry.age}`);
+          if (entry.visitDate) details.push(`Visit date: ${entry.visitDate}`);
+          if (details.length) addTextElement(card, "p", "feedback-meta", details.join(" · "));
+          if (entry.comments) addTextElement(card, "p", "", entry.comments);
+          feedbackList.appendChild(card);
+        });
+      }
 
-    form.addEventListener("submit",(e)=>{
+      form.addEventListener("submit", (event) => {
+        event.preventDefault();
 
-      e.preventDefault();
+        if (!form.reportValidity()) return;
+        if (!selectedRating) {
+          showNotice("Please select a hotel service rating before submitting.", "error");
+          document.getElementById("serviceStars").scrollIntoView({ behavior: "smooth", block: "center" });
+          stars[0].focus();
+          return;
+        }
 
-      successMessage.style.display = "block";
+        const entry = {
+          id: (window.crypto && crypto.randomUUID) ? crypto.randomUUID() : `${Date.now()}-${Math.random().toString(16).slice(2)}`,
+          createdAt: Date.now(),
+          name: document.getElementById("name").value.trim(),
+          email: document.getElementById("email").value.trim(),
+          age: document.getElementById("age").value,
+          visitDate: document.getElementById("visitDate").value,
+          visit: form.querySelector('input[name="visit"]:checked')?.value || "",
+          reasons: [...form.querySelectorAll('input[name="reasons"]:checked')].map((item) => item.value),
+          serviceRating: selectedRating,
+          foodRating: document.getElementById("foodRating").value,
+          comments: comments.value.trim()
+        };
 
-      localStorage.setItem(
+        const entries = getFeedbackEntries();
+        entries.push(entry);
+        if (!saveFeedbackEntries(entries)) return;
 
-        "hotelFeedback",
-
-        JSON.stringify({
-
-          name:document.getElementById("name").value,
-
-          email:document.getElementById("email").value,
-
-          comments:comments.value
-
-        })
-
-      );
-
-      form.reset();
-
-      stars.forEach((s)=>{
-
-        s.classList.remove("active");
-
+        renderFeedback();
+        form.reset();
+        setRating(0);
+        updateCounter();
+        showNotice("Thank you! Your feedback has been saved successfully in this browser.", "success");
+        document.getElementById("name").focus();
       });
 
-      charCount.textContent = 0;
+      form.addEventListener("reset", () => {
+        window.setTimeout(() => {
+          setRating(0);
+          updateCounter();
+          notice.className = "notice";
+          notice.textContent = "";
+        }, 0);
+      });
 
-      setTimeout(()=>{
-
-        successMessage.style.display = "none";
-
-      },4000);
-
-    });
-
+      renderFeedback();
+      updateCounter();
+    })();
   </script>
-
 </body>
-
 </html>
